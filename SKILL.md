@@ -4,99 +4,153 @@ description: >
   Поиск и анализ виральных монобрендов (1-5 SKU, один продукт/категория).
   Используй когда: (1) найти хайповый монобренд, (2) оценить виральность бренда/продукта,
   (3) анализ ниши для монобренда, (4) найди монобренд, виральный продукт,
-  (5) скоринг бренда по виральности и продажам.
+  (5) скоринг бренда по виральности и продажам, (6) найти бренд-донор для локализации.
   НЕ для: мультибрендовой аналитики, общего маркетингового анализа.
 ---
 
 > **Universal AI Skill** -- works with Claude Code, OpenClaw, Cursor, Windsurf, or any LLM agent that reads markdown and can execute commands.
 
-
-
 # Monobrand Scout -- поиск виральных монобрендов
 
 ## Что такое монобренд
-Бренд с 1-5 SKU в одной категории. Фокус на одном продукте, глубокое понимание клиента, виральный потенциал. Примеры: Stanley (термокружки), Ridge Wallet (кошельки), UNCO (детское белье), Crocs (клоги).
+Бренд с 1-5 SKU в одной товарной категории. Фокус на одном продукте, глубокое понимание клиента, виральный потенциал. Все SKU в одной вертикали, похожи между собой.
+
+**Примеры:** UNCO (мужское белье, 3 SKU), Stanley (термокружки), Ridge Wallet (кошельки), Crocs (клоги), Solo Stove (костровые чаши), Truff (соус).
+
+**Монобренд vs Арбитраж:** арбитражная модель -- 20-30 несвязанных товаров, низкая маржа, нет LTV. Монобренд -- 1-5 SKU, глубокий продукт, виральность, повторные покупки, сильная команда на одном фокусе.
+
+---
+
+## Стратегия: копирование и локализация
+
+Основная стратегия -- НЕ придумывать с нуля, а находить работающий бренд-донор в другом регионе (США, Европа) и локализовать на свой рынок (РФ, СНГ).
+
+**Бренд-донор** -- успешный монобренд, чей продукт и модель можно адаптировать.
 
 ---
 
 ## Пайплайн поиска
 
 ### Вход
-- Категория (опционально): детская одежда, косметика, кухня...
+- Категория (опционально): детская одежда, косметика, кухня, массажеры...
 - Гео: РФ / глобальный / конкретная страна
-- Цель: найти готовый бренд для дистрибуции / найти нишу / контент
+- Цель: найти бренд-донор для локализации / найти нишу / контент
+- Минимальный порог: бренд-донор >$1M/год оборот
 
-### Этап 1. Сбор кандидатов (3 потока параллельно)
+### Этап 1. Сбор кандидатов (4 потока параллельно)
 
-**Поток A -- Маркетплейсы (продажи):**
-- Wildberries API: топ по категории, фильтр бренды с 1-5 SKU
+**Поток A -- Amazon (главный источник доноров):**
+- Best Sellers -- что хорошо продается в категории
+- New Releases -- что недавно запустили
+- Movers & Shakers -- кто быстро растет (ключевой сигнал!)
+- Фильтр по подкатегориям, рейтинг, отзывы
+
+**Поток B -- Shopify D2C магазины:**
+- Internet Search Unit (internetunit.com) -- аналитика Shopify магазинов:
+  - Оборот за 30 дней, количество продаж
+  - Фильтры по категории, стране, SKU
+  - Основной сервис для поиска доноров
+- Hom10 -- дополнительная аналитика Shopify
+- Ручной просмотр: перейти в /collections/all, посчитать SKU
+
+**Поток C -- Маркетплейсы РФ (проверка доступности):**
+- Wildberries API: есть ли уже на рынке
 - Ozon: аналитика через MPStats/Moneyplace
-- Amazon: через JungleScout или Product Advertising API
+- Если бренда НЕТ на WB/Ozon -- это возможность для локализации
 
-**Поток B -- Соцсети (виральность):**
-- TikTok Creative Center: трендовые продукты по категории
-- Instagram: хэштеги бренда, количество Reels
-- YouTube: обзоры продукта, просмотры
+**Поток D -- Соцсети + тренды (виральность):**
+- TikTok Creative Center: трендовые продукты
+- Instagram бренда: подписчики, Reels, engagement
+- YouTube: обзоры, просмотры
+- Google Trends: рост запросов
+- Exploding Topics: ранние сигналы
 
-**Поток C -- Тренды (ранние сигналы):**
-- Google Trends: растущие запросы
-- Exploding Topics: ранние тренды
-- Kickstarter/Indiegogo: успешные монопродукты
-- Product Hunt: новые продукты
+### Этап 2. 12 критериев отбора донора
 
-### Этап 2. Фильтрация
-ИИ анализирует каждого кандидата:
-- SKU count: 1-5?
-- Одна категория?
-- Есть UGC контент?
-- Рост за последние 3-6 месяцев?
+| # | Критерий | Описание | Must-have |
+|---|----------|----------|-----------|
+| 0 | Финансовый интерес | >$1M/год оборот (Shopify + Amazon) | ДА |
+| 1 | SKU count | 1-5 товаров в одной категории | ДА |
+| 2 | Одна вертикаль | Все товары похожи, одна идея | ДА |
+| 3 | Виральный потенциал | Продукт можно показать в Reels/TikTok | ДА |
+| 4 | Соцсети | Активный Instagram/TikTok, UGC контент | Желательно |
+| 5 | Маржинальность | Цена позволяет маржу >40% после всех расходов | ДА |
+| 6 | Отсутствие на целевом рынке | Нет аналога на WB/Ozon или слабый конкурент | Желательно |
+| 7 | Производимость | Можно найти фабрику, не сложная технология | ДА |
+| 8 | Логистируемость | Не хрупкий, не габаритный, легко доставить | Желательно |
+| 9 | Repeat purchase (LTV) | Покупатель вернется за повторной покупкой | Желательно |
+| 10 | Ценностное предложение | Покупатель платит за ценность, не за цену | ДА |
+| 11 | Команда может фокусироваться | Один продукт = вся команда на нем | ДА |
+| 12 | Тестируемость | Можно завезти тестовую партию через карго | Желательно |
 
 ### Этап 3. Скоринг виральности
 
 Формула:
 ```
-Virality Score = (TikTok Views x 0.3) + (Google Trends Growth x 0.25) 
-  + (UGC Count x 0.2) + (Engagement Rate x 0.15) + (Review Count x 0.1)
+Virality Score = (TikTok Views x 0.25) + (Google Trends Growth x 0.20) 
+  + (UGC Count x 0.15) + (Engagement Rate x 0.10) + (Review Count x 0.10)
+  + (Financial Score x 0.20)
 ```
 
 | Метрика | Источник | Вес |
 |---------|----------|-----|
-| TikTok просмотры по хэштегу бренда | TikTok Creative Center / API | 0.30 |
-| Рост поисковых запросов (3 мес) | Google Trends / SerpAPI | 0.25 |
-| Количество UGC | Instagram + TikTok | 0.20 |
-| Engagement rate | SocialBlade / Meta API | 0.15 |
-| Количество отзывов на маркетплейсах | WB API / Ozon / Amazon | 0.10 |
+| TikTok просмотры по хэштегу бренда | TikTok Creative Center / API | 0.25 |
+| Рост поисковых запросов (3 мес) | Google Trends / SerpAPI | 0.20 |
+| Финансовые показатели (>$1M = макс) | Internet Search Unit / аналитика | 0.20 |
+| Количество UGC | Instagram + TikTok | 0.15 |
+| Engagement rate | SocialBlade / Meta API | 0.10 |
+| Количество отзывов на маркетплейсах | Amazon / WB API | 0.10 |
 
 Шкала:
-- 80-100: Вирусный хит (Stanley, Crocs)
-- 60-79: Сильный рост (Ridge Wallet)
-- 40-59: Перспективный (ранняя стадия)
-- 20-39: Нишевый (узкая аудитория)
-- 0-19: Нет виральности
+- 80-100: Вирусный хит, идеальный донор (Stanley, Crocs)
+- 60-79: Сильный рост, отличный кандидат (Ridge Wallet)
+- 40-59: Перспективный, стоит изучить глубже
+- 20-39: Нишевый, только если сильно верите в идею
+- 0-19: Пропускаем
 
-### Этап 4. Карточка бренда
+### Этап 4. Карточка бренда-донора
 
 ```
 Бренд: [название]
+Сайт: [URL Shopify магазина]
 Страна: [происхождение]
 Продукт: [что продают]
-SKU: [количество]
+SKU: [количество, описание каждого]
 Категория: [ниша]
-Цена: [диапазон]
+Цена: [диапазон в USD]
+Оборот (оценка): [$X M/год]
 Virality Score: [0-100]
-Выручка (оценка): [если доступно]
+---
+Amazon: [ссылка, BSR, рейтинг, отзывы]
+Instagram: [подписчики, engagement]
 TikTok: [просмотры по хэштегу]
-Google Trends: [рост %]
-Маркетплейсы РФ: [есть/нет]
-Конкуренция: [низкая/средняя/высокая]
-Почему виральный: [1-2 предложения]
-Потенциал в РФ: [оценка]
+Google Trends: [рост % за 3 мес]
+---
+Есть на WB/Ozon: [да/нет, конкуренты]
+Производимость: [легко/средне/сложно]
+Логистика: [простая/средняя/сложная]
+Маржинальность (оценка): [%]
+---
+12 критериев: [X/12 пройдено]
+Вердикт: [копировать / изучить глубже / пропустить]
+Почему: [1-2 предложения]
 ```
 
-### Этап 5. Выход
-- Shortlist 5-10 монобрендов с карточками
+### Этап 5. Этапы запуска (после выбора донора)
+
+1. **Поиск фабрики** -- найти производителя товара-донора или аналогичную фабрику
+2. **Прайсы и MOQ** -- запросить цены, минимальный заказ у нескольких фабрик
+3. **Логистика** -- определить способ доставки:
+   - Карго (тестовая партия, быстро, но серая зона)
+   - Белый ВЭД (для масштабирования, сертификация)
+4. **Тестовая партия** -- первая партия через карго на маркетплейс
+5. **Тест на маркетплейсе** -- WB/Ozon, оценка спроса
+6. **Масштабирование** -- если тест ОК: белый ВЭД, бренд, маркетинг
+
+### Этап 6. Выход
+- Shortlist 5-10 брендов-доноров с карточками
 - Рейтинг по Virality Score
-- Рекомендация: дистрибуция / запуск аналога / контент
+- Для каждого: вердикт и следующий шаг
 
 ---
 
@@ -106,58 +160,78 @@ Google Trends: [рост %]
 
 | Инструмент | Что дает | URL / Доступ |
 |------------|----------|--------------|
-| TikTok Creative Center | Трендовые хэштеги, продукты, звуки. Фильтр по стране | ads.tiktok.com/business/creativecenter |
-| Google Trends | Рост запросов, сравнение брендов, сезонность | trends.google.com (pytrends) |
-| YouTube Data API v3 | Просмотры обзоров, динамика, комментарии | Бесплатный API key (Google Cloud) |
-| Meta Graph API | Instagram engagement, посты по хэштегу | Бесплатный (Meta Developer) |
-| Pinterest Trends | Визуальные тренды по категориям | trends.pinterest.com |
-| SocialBlade (free) | Базовая статистика YouTube/TikTok/Instagram | socialblade.com |
-| Wildberries API | Каталог, карточки, отзывы, бренды | Открытый content-api |
+| Amazon Best Sellers | Топ продаж по категориям | amazon.com/bestsellers |
+| Amazon New Releases | Новые запуски | amazon.com/gp/new-releases |
+| Amazon Movers & Shakers | Быстрорастущие товары | amazon.com/gp/movers-and-shakers |
+| TikTok Creative Center | Трендовые продукты, хэштеги | ads.tiktok.com/business/creativecenter |
+| Google Trends | Рост запросов, сравнение | trends.google.com (pytrends) |
+| YouTube Data API v3 | Просмотры обзоров | Бесплатный API key |
+| Meta Graph API | Instagram engagement | Бесплатный (Meta Developer) |
+| Pinterest Trends | Визуальные тренды | trends.pinterest.com |
+| SocialBlade (free) | Базовая статистика соцсетей | socialblade.com |
+| Wildberries API | Каталог, отзывы, бренды | Открытый content-api |
 | DuckDuckGo Search | Веб-поиск по брендам | Скилл duckduckgo-search |
-| Kickstarter | Успешные монопродукты | Парсинг (нет API) |
-| Product Hunt | Новые продукты, upvotes | GraphQL API (бесплатный) |
-| Reddit / X | Упоминания, discussions | SocialData API (есть) |
+| Product Hunt | Новые продукты | GraphQL API |
 
-### Платные
+### Платные (ключевые)
 
 | Инструмент | Что дает | Цена/мес | Приоритет |
 |------------|----------|----------|-----------|
+| Internet Search Unit | Shopify аналитика: оборот, продажи, фильтры | ~$50-100 | КРИТИЧЕСКИЙ -- основной поиск доноров |
 | Exploding Topics | Ранние тренды ДО массового рынка | $39 | ВЫСОКИЙ |
 | SerpAPI | Google Trends + Shopping программно | $50 | ВЫСОКИЙ |
-| MPStats | Аналитика продаж WB/Ozon: выручка, бренды | ~$50 | ВЫСОКИЙ |
-| JungleScout | Amazon: продажи, ниши, конкуренция | $49 | СРЕДНИЙ |
-| Tokboard / TokStats | TikTok: просмотры, engagement по хэштегам | $15-50 | СРЕДНИЙ |
-| SimilarWeb | Трафик сайта, источники, рост | $100+ | НИЗКИЙ |
-| BrandWatch / Mention | Мониторинг упоминаний везде | $100+ | НИЗКИЙ |
-| SparkToro | Аудитория бренда, каналы | $50 | НИЗКИЙ |
+| MPStats | Аналитика WB/Ozon: выручка, бренды | ~$50 | ВЫСОКИЙ (для РФ рынка) |
+| Hom10 | Дополнительная аналитика Shopify | ~$30-50 | СРЕДНИЙ |
+| JungleScout | Amazon: продажи, ниши, BSR | $49 | СРЕДНИЙ |
+| Tokboard / TokStats | TikTok аналитика | $15-50 | СРЕДНИЙ |
+| SimilarWeb | Трафик сайта, источники | $100+ | НИЗКИЙ |
+| BrandWatch / Mention | Мониторинг упоминаний | $100+ | НИЗКИЙ |
+| SparkToro | Аудитория бренда | $50 | НИЗКИЙ |
 
 ### Минимальный стек (бесплатный)
-DuckDuckGo + Google Trends (pytrends) + YouTube Data API + TikTok Creative Center + WB API + Claude
+Amazon (Best Sellers + Movers & Shakers) + Google Trends + YouTube API + TikTok Creative Center + WB API + DuckDuckGo + Claude
 
-### Рекомендуемый стек ($139/мес)
-Все бесплатное + Exploding Topics ($39) + SerpAPI ($50) + MPStats ($50)
+### Рекомендуемый стек (~$200/мес)
+Все бесплатное + Internet Search Unit (~$100) + Exploding Topics ($39) + MPStats ($50)
+
+### Полный стек (~$400/мес)
+Рекомендуемый + SerpAPI ($50) + JungleScout ($49) + Hom10 ($50) + Tokboard ($30)
 
 ---
 
 ## Автоматизация
 
-### Google Trends (pytrends)
+### Amazon Best Sellers парсинг
+```python
+# Через DuckDuckGo/веб-поиск
+from duckduckgo_search import DDGS
+with DDGS() as ddgs:
+    results = list(ddgs.text(f'amazon.com best sellers {CATEGORY} 2024', max_results=10))
+```
+
+### Google Trends
 ```python
 from pytrends.request import TrendReq
 pytrends = TrendReq(hl='ru', tz=180)
-pytrends.build_payload(['бренд1', 'бренд2'], timeframe='today 3-m')
+pytrends.build_payload(['brand1', 'brand2'], timeframe='today 3-m')
 data = pytrends.interest_over_time()
 ```
 
 ### Wildberries API
 ```bash
-curl -s "https://search.wb.ru/exactmatch/ru/common/v7/search?query=КАТЕГОРИЯ&resultset=catalog" \
+curl -s "https://search.wb.ru/exactmatch/ru/common/v7/search?query=CATEGORY&resultset=catalog" \
   | jq '.data.products[:20] | .[] | {brand, name, rating, feedbacks}'
 ```
 
 ### YouTube Data API
 ```bash
-curl -s "https://www.googleapis.com/youtube/v3/search?part=snippet&q=БРЕНД+обзор&type=video&order=viewCount&maxResults=10&key=API_KEY"
+curl -s "https://www.googleapis.com/youtube/v3/search?part=snippet&q=BRAND+review&type=video&order=viewCount&maxResults=10&key=API_KEY"
+```
+
+### Shopify магазин: проверка SKU
+```bash
+# Открыть /collections/all на сайте бренда -- посчитать товары
+curl -s "https://BRAND-SITE.com/collections/all" | grep -c 'product-card'
 ```
 
 ---
@@ -166,6 +240,17 @@ curl -s "https://www.googleapis.com/youtube/v3/search?part=snippet&q=БРЕНД+
 
 | Ключ | Файл | Статус |
 |------|------|--------|
-| YouTube Data API | ~/.openclaw/.secrets/youtube.env | Нужен ключ |
+| YouTube Data API | ~/.openclaw/.secrets/youtube.env | Нужен |
 | SerpAPI | ~/.openclaw/.secrets/serpapi.env | Нужен (платный стек) |
 | SocialData API | настроен в системе | Есть |
+| Internet Search Unit | ручной доступ через браузер | Нужна подписка |
+
+---
+
+## Источники методологии
+Методология основана на курсе "Запуск Бренда" (Expansio / Валерий):
+- Урок 1: Определение монобренда, преимущества перед арбитражем
+- Урок 2: Поиск донора через Amazon и Shopify
+- Урок 3: 12 критериев идеального донора
+- Урок 4: Практический разбор доноров на примерах
+- Урок 5: Этапы запуска от первой партии до продаж (Анна, UNCO)

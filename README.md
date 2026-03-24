@@ -1,81 +1,52 @@
 # Monobrand Scout
 
-AI-powered pipeline for discovering viral monobrand products (1-5 SKU, single category).
+AI-powered pipeline for discovering viral monobrand products (1-5 SKU, single category) and finding brand-donors for localization.
 
-Works with **Claude Code**, **OpenClaw**, and any AI agent that reads markdown instructions.
+Works with **Claude Code**, **OpenClaw**, **Cursor**, **Windsurf**, and any AI agent that reads markdown.
 
 ## What is a Monobrand?
 
 A brand with 1-5 SKUs in a single category, focused on deep customer understanding and viral potential.
 
-**Examples:** Stanley (tumblers), Ridge Wallet, Crocs (clogs), UNCO (kids underwear), Solo Stove, Truff (hot sauce).
+**Examples:** UNCO (underwear, 3 SKU), Stanley (tumblers), Ridge Wallet, Crocs (clogs), Solo Stove, Truff (hot sauce).
+
+**Monobrand vs Arbitrage:** Arbitrage = 20-30 unrelated products, low margins, no LTV. Monobrand = 1-5 SKU, deep product focus, virality, repeat purchases.
+
+## Strategy: Copy & Localize
+
+The core strategy is NOT inventing from scratch, but finding a proven brand-donor in another market (US, Europe) and localizing it to your market.
 
 ## How It Works
 
 ```
-Category + Geo → Collect Candidates → Filter (1-5 SKU) → Virality Scoring → Shortlist
+Category + Geo → Collect from 4 streams → 12 Criteria Filter → Virality Scoring → Brand Cards → Launch Steps
 ```
 
-### Pipeline
+### 6-Stage Pipeline
 
-1. **Collect** from 3 parallel streams:
-   - Marketplaces (Wildberries, Ozon, Amazon)
-   - Social media (TikTok, Instagram, YouTube)
-   - Trends (Google Trends, Kickstarter, Product Hunt)
+1. **Collect candidates** from 4 parallel streams:
+   - Amazon (Best Sellers, New Releases, Movers & Shakers)
+   - Shopify D2C stores (Internet Search Unit analytics)
+   - Local marketplaces (Wildberries, Ozon — availability check)
+   - Social + Trends (TikTok, Instagram, Google Trends)
 
-2. **Filter** — keep only brands with 1-5 SKU in one category
+2. **12 criteria filter** — financial viability (>$1M/yr), SKU count, virality potential, margins, manufacturability, logistics, LTV...
 
-3. **Score virality** (0-100):
-   - TikTok views (30%)
-   - Google Trends growth (25%)
-   - UGC content count (20%)
-   - Engagement rate (15%)
-   - Review count (10%)
+3. **Virality scoring** (0-100) — TikTok views (25%), Google Trends growth (20%), financials (20%), UGC (15%), engagement (10%), reviews (10%)
 
-4. **Output** — shortlist with brand cards
+4. **Brand cards** — detailed profile of each candidate with all metrics
 
-## Installation
+5. **Launch roadmap** — factory → logistics → test batch → marketplace test → scale
 
-### Claude Code
-
-Drop `SKILL.md` into your project or reference it directly:
-
-```bash
-# Option 1: Clone into your project
-git clone https://github.com/qwwiwi/monobrand-scout.git
-
-# Option 2: Reference as a file
-# Just point Claude Code to SKILL.md in conversation:
-# "Read monobrand-scout/SKILL.md and find me viral monobrands in cosmetics"
-```
-
-Claude Code will read the skill file and follow the pipeline automatically — using web search, APIs, and analysis tools available in its environment.
-
-### OpenClaw
-
-```bash
-# Install as AgentSkill
-cd ~/.openclaw/workspace/skills/
-git clone https://github.com/qwwiwi/monobrand-scout.git
-```
-
-The agent picks it up automatically when you ask about monobrands.
-
-### Any AI Agent
-
-The skill is a plain markdown file (`SKILL.md`) with structured instructions. Any AI agent that can:
-- Read markdown files
-- Execute shell commands (curl, python)
-- Search the web
-
-...can follow this pipeline. Just include `SKILL.md` in the agent's context.
+6. **Output** — ranked shortlist of 5-10 brand-donors with verdicts
 
 ## Tools
 
-### Free (11 sources)
+### Free (12 sources)
 
 | Tool | What it provides |
 |------|-----------------|
+| Amazon Best Sellers / New Releases / Movers & Shakers | Top products by category, fast growers |
 | TikTok Creative Center | Trending products, hashtags by country |
 | Google Trends (pytrends) | Search volume growth, seasonality |
 | YouTube Data API v3 | Product review views, channel stats |
@@ -84,76 +55,79 @@ The skill is a plain markdown file (`SKILL.md`) with structured instructions. An
 | SocialBlade | YouTube/TikTok/Instagram basic stats |
 | Wildberries API | Product catalog, reviews, brands |
 | DuckDuckGo Search | Web search for brands |
-| Kickstarter | Successful mono-product campaigns |
 | Product Hunt | New products, upvotes |
 | Reddit / X | Mentions, discussions, sentiment |
 
-### Paid ($139/mo recommended)
+### Paid (recommended ~$200/mo)
 
-| Tool | What it provides | Price |
-|------|-----------------|-------|
-| Exploding Topics | Early trends BEFORE mass market | $39/mo |
-| SerpAPI | Google Trends + Shopping programmatically | $50/mo |
-| MPStats | Wildberries/Ozon sales analytics | $50/mo |
-
-### Optional (deep analysis)
-
-| Tool | Price |
-|------|-------|
-| JungleScout (Amazon) | $49/mo |
-| Tokboard (TikTok analytics) | $15-50/mo |
-| SimilarWeb (traffic) | $100+/mo |
-| BrandWatch (mentions) | $100+/mo |
-| SparkToro (audience) | $50/mo |
+| Tool | What it provides | Price | Priority |
+|------|-----------------|-------|----------|
+| Internet Search Unit | Shopify store analytics: revenue, sales, filters | ~$100/mo | CRITICAL |
+| Exploding Topics | Early trends before mass market | $39/mo | HIGH |
+| MPStats | Wildberries/Ozon sales analytics | $50/mo | HIGH |
+| SerpAPI | Google Trends programmatically | $50/mo | HIGH |
+| JungleScout | Amazon sales, niches, BSR | $49/mo | MEDIUM |
+| Hom10 | Additional Shopify analytics | ~$30-50/mo | MEDIUM |
+| Tokboard | TikTok analytics | $15-50/mo | MEDIUM |
+| SimilarWeb | Website traffic | $100+/mo | LOW |
 
 ## Virality Score
 
-| Score | Level | Example |
-|-------|-------|---------|
-| 80-100 | Viral hit | Stanley, Crocs |
-| 60-79 | Strong growth | Ridge Wallet |
-| 40-59 | Promising | Early-stage virality |
-| 20-39 | Niche | Small but loyal audience |
-| 0-19 | No virality | — |
+| Score | Level | Action |
+|-------|-------|--------|
+| 80-100 | Viral hit | Ideal donor — start immediately |
+| 60-79 | Strong growth | Excellent candidate — deep dive |
+| 40-59 | Promising | Worth studying more |
+| 20-39 | Niche | Only if you strongly believe |
+| 0-19 | Skip | Move on |
 
-## Quick Start
+## 12 Donor Criteria
 
-### Google Trends check
-```python
-from pytrends.request import TrendReq
-pytrends = TrendReq(hl='en', tz=0)
-pytrends.build_payload(['brand1', 'brand2'], timeframe='today 3-m')
-data = pytrends.interest_over_time()
-```
+| # | Criterion | Must-have |
+|---|-----------|-----------|
+| 0 | Revenue >$1M/yr | YES |
+| 1 | 1-5 SKU | YES |
+| 2 | Single vertical | YES |
+| 3 | Viral potential (Reels/TikTok) | YES |
+| 4 | Active social media | Preferred |
+| 5 | Margins >40% | YES |
+| 6 | Not yet on target market | Preferred |
+| 7 | Manufacturable | YES |
+| 8 | Easy logistics | Preferred |
+| 9 | Repeat purchase (LTV) | Preferred |
+| 10 | Value proposition | YES |
+| 11 | Team can focus | YES |
+| 12 | Testable (small batch) | Preferred |
 
-### Wildberries API search
+## Installation
+
+### Claude Code
 ```bash
-curl -s "https://search.wb.ru/exactmatch/ru/common/v7/search?query=CATEGORY&resultset=catalog" \
-  | jq '.data.products[:20] | .[] | {brand, name, rating, feedbacks}'
+git clone https://github.com/qwwiwi/monobrand-scout.git
+# Then: "Read monobrand-scout/SKILL.md and find me brand-donors in [category]"
 ```
 
-### YouTube review search
+### OpenClaw
 ```bash
-curl -s "https://www.googleapis.com/youtube/v3/search?part=snippet&q=BRAND+review&type=video&order=viewCount&maxResults=10&key=API_KEY"
+cd ~/.openclaw/workspace/skills/
+git clone https://github.com/qwwiwi/monobrand-scout.git
 ```
 
-## Use Cases
-
-- **Ecommerce** — find brands to distribute in your market
-- **Content** — generate viral content about trending products
-- **Market research** — analyze niches for launching your own monobrand
-- **Investment** — early signals on brands with viral potential
+### Any AI Agent
+Include `SKILL.md` in the agent's context. It's plain markdown — no dependencies.
 
 ## Compatibility
 
 | Platform | How to use |
 |----------|-----------|
-| **Claude Code** | Clone repo or add SKILL.md to project context |
-| **OpenClaw** | Clone into `~/.openclaw/workspace/skills/` |
+| **Claude Code** | Clone repo or add SKILL.md to project |
+| **OpenClaw** | Clone into skills/ directory |
 | **Cursor / Windsurf** | Add SKILL.md as project file |
-| **Any LLM agent** | Include SKILL.md in system prompt or context |
+| **Any LLM agent** | Include SKILL.md in context |
 
-The skill is just structured markdown — no runtime dependencies. The agent reads it and follows the pipeline using whatever tools are available in its environment.
+## Methodology
+
+Based on the "Brand Launch" course by Expansio, covering monobrand definition, donor search (Amazon + Shopify), 12 selection criteria, practical examples, and launch operations.
 
 ## License
 
