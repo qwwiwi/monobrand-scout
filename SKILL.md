@@ -8,6 +8,10 @@ description: >
   НЕ для: мультибрендовой аналитики, общего маркетингового анализа.
 ---
 
+> **Universal AI Skill** -- works with Claude Code, OpenClaw, Cursor, Windsurf, or any LLM agent that reads markdown and can execute commands.
+
+
+
 # Monobrand Scout -- поиск виральных монобрендов
 
 ## Что такое монобренд

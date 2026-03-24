@@ -1,6 +1,8 @@
 # Monobrand Scout
 
-AI-powered pipeline for discovering viral monobrand products.
+AI-powered pipeline for discovering viral monobrand products (1-5 SKU, single category).
+
+Works with **Claude Code**, **OpenClaw**, and any AI agent that reads markdown instructions.
 
 ## What is a Monobrand?
 
@@ -30,12 +32,43 @@ Category + Geo → Collect Candidates → Filter (1-5 SKU) → Virality Scoring 
    - Engagement rate (15%)
    - Review count (10%)
 
-4. **Output** — shortlist with brand cards:
-   - Name, country, product, SKU count
-   - Virality Score
-   - Revenue estimate
-   - Marketplace availability (RU/Global)
-   - Competition level
+4. **Output** — shortlist with brand cards
+
+## Installation
+
+### Claude Code
+
+Drop `SKILL.md` into your project or reference it directly:
+
+```bash
+# Option 1: Clone into your project
+git clone https://github.com/qwwiwi/monobrand-scout.git
+
+# Option 2: Reference as a file
+# Just point Claude Code to SKILL.md in conversation:
+# "Read monobrand-scout/SKILL.md and find me viral monobrands in cosmetics"
+```
+
+Claude Code will read the skill file and follow the pipeline automatically — using web search, APIs, and analysis tools available in its environment.
+
+### OpenClaw
+
+```bash
+# Install as AgentSkill
+cd ~/.openclaw/workspace/skills/
+git clone https://github.com/qwwiwi/monobrand-scout.git
+```
+
+The agent picks it up automatically when you ask about monobrands.
+
+### Any AI Agent
+
+The skill is a plain markdown file (`SKILL.md`) with structured instructions. Any AI agent that can:
+- Read markdown files
+- Execute shell commands (curl, python)
+- Search the web
+
+...can follow this pipeline. Just include `SKILL.md` in the agent's context.
 
 ## Tools
 
@@ -73,7 +106,7 @@ Category + Geo → Collect Candidates → Filter (1-5 SKU) → Virality Scoring 
 | BrandWatch (mentions) | $100+/mo |
 | SparkToro (audience) | $50/mo |
 
-## Virality Score Scale
+## Virality Score
 
 | Score | Level | Example |
 |-------|-------|---------|
@@ -111,15 +144,16 @@ curl -s "https://www.googleapis.com/youtube/v3/search?part=snippet&q=BRAND+revie
 - **Market research** — analyze niches for launching your own monobrand
 - **Investment** — early signals on brands with viral potential
 
-## OpenClaw Skill
+## Compatibility
 
-This repository is an [OpenClaw](https://openclaw.ai) AgentSkill. Drop it into your workspace `skills/` directory and the agent will use it automatically when you ask about monobrands.
+| Platform | How to use |
+|----------|-----------|
+| **Claude Code** | Clone repo or add SKILL.md to project context |
+| **OpenClaw** | Clone into `~/.openclaw/workspace/skills/` |
+| **Cursor / Windsurf** | Add SKILL.md as project file |
+| **Any LLM agent** | Include SKILL.md in system prompt or context |
 
-```bash
-# Install as OpenClaw skill
-cd ~/.openclaw/workspace/skills/
-git clone https://github.com/qwwiwi/monobrand-scout.git
-```
+The skill is just structured markdown — no runtime dependencies. The agent reads it and follows the pipeline using whatever tools are available in its environment.
 
 ## License
 
